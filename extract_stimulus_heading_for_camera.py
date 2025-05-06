@@ -166,8 +166,11 @@ def process_braidz_file(braidz_path, output_path, get_heading_func):
             # Check if 'stim.csv' exists in the archive
             if "stim.csv" in z.namelist():
                 stim = pd.read_csv(z.open("stim.csv"))
-            else:
+            elif "opto.csv" in z.namelist():
                 stim = pd.read_csv(z.open("opto.csv"))
+            else:
+                print(f"No stim or opto data found in {braidz_path}")
+                return False
     except Exception as e:
         print(f"Error reading {braidz_path}: {e}")
         return False
@@ -183,7 +186,16 @@ def process_braidz_file(braidz_path, output_path, get_heading_func):
     for idx, row in stim.iterrows():
         obj_id = row["obj_id"]
         frame = row["frame"]
-        stim_heading = get_heading_func(row["stim_position_screen"])
+        if "stim_position_screen" not in row:
+            # If stim_position_screen is not present, use heading directly
+            stim_heading = row["heading"]
+        else:
+            # Use stim_position_screen for heading interpolation
+            stim_heading = row["stim_position_screen"]
+
+        # Interpolate heading
+        stim_heading = get_heading_func(stim_heading)
+
         write_to_csv(csv_file, obj_id, frame, stim_heading)
 
     print(f"Interpolated {braidz_path} to {output_file}")
