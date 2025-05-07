@@ -1,0 +1,2 @@
+track,frame_idx,instance.score,head.x,head.y,head.score,neck.x,neck.y,neck.score,abdomen.x,abdomen.y,abdomen.score
+,589,0.2270437628030777,,,0.0,,,0.0,-3.1699914932250977,460.17767333984375,0.5515051484107971

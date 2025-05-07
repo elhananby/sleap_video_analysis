@@ -168,6 +168,8 @@ def process_braidz_file(braidz_path, output_path, get_heading_func):
                 stim = pd.read_csv(z.open("stim.csv"))
             elif "opto.csv" in z.namelist():
                 stim = pd.read_csv(z.open("opto.csv"))
+            elif "trigger.csv" in z.namelist():
+                stim = pd.read_csv(z.open("trigger.csv"))
             else:
                 print(f"No stim or opto data found in {braidz_path}")
                 return False
